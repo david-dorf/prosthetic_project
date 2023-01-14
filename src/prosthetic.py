@@ -24,16 +24,16 @@ def select(address):
     addr1_pin.value = address & 0b010
     addr2_pin.value = address & 0b100
 
-def get_voltage(pin):
-    """Get the voltage from the ADC pin.
+def corrected_output(pin):
+    """Get the corrected output from the ADC pin.
 
     Args:
         pin (int): The ADC pin to read from.
 
     Returns:
-        voltage: The adjusted (gain and bias) voltage reading from the ADC pin.
+        voltage: The adjusted (gain and bias) output voltage reading from the ADC pin.
     """
-    return (pin.value * 3.3) / 65536
+    return (pin.value-12840)**2
 
 # Initialize ADC pins
 addr0_pin = DigitalInOut(board.ADC_ADDR_0)
@@ -56,30 +56,30 @@ j = 0
 # Main loop
 while(1):
     # TODO: Modularize code into functions [on/off switch, sensor reading, servo control]
-    
+
     # Read sensor voltage on pin 1
-    select(1)
+    select(0)
     sensorvoltage = get_voltage(analog_in)
     sinmotorangle = int(90 + 80 * (math.sin(math.pi/180 * frequency * i)))
     # sensormotorangle = int(90 + 80 * (sensorvoltage))
-    
-    if j == 0:
-        for servo in servos:
-            servo.angle = sinmotorangle
-            i += 1
-            # servo.angle = sensormotorangle
-    else:
-        break
-    
+
+    # if j == 0:
+    #     for servo in servos:
+    #         servo.angle = sinmotorangle
+    #         # servo.angle = sensormotorangle
+    # else:
+    #     break
+
     # Print sensor voltage to serial monitor
     print((sensorvoltage,))
-    
+
     ## Optional on/off switch by touching sensor pin 1 to ground [make separate function]
     # if sensorvoltage > 1:
     #     if j == 0:
     #         j = 1
     #     else:
     #         j = 0
-    
+
     # Add in delay for stability
     time.sleep(0.05)
+    i += 1
