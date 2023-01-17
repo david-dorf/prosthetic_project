@@ -61,4 +61,4 @@ while True:
     current = (get_voltage(analog_in) + CURRENT_OFFSET) * CURRENT_GAIN
     #print("Current =", round(current, 4))
 
-    time.sleep(0.02)
+    time.sleep(0.05)
