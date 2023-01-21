@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 
 # open the putty log file
 # with open('putty.log') as f:
-with open('putty2.log') as f:
+with open('emgmyo.log') as f:
     # read the file into a list
     lines = f.readlines()
 
