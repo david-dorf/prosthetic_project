@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 
 # open the putty log file
 # with open('putty.log') as f:
-with open('emgmyo.log') as f:
+with open('ppg.log') as f:
     # read the file into a list
     lines = f.readlines()
 
@@ -21,7 +21,6 @@ for line in lines:
     
 plt.xlabel('Time Frame (9600 Baud)')
 # EWMA is the Exponentially Weighted Moving Average
-# plt.ylabel('MMG Signal Strength Squared (EWMA)')
-plt.ylabel('EMG Signal Strength Squared (EWMA)')
+plt.ylabel('PPG Signal Strength Squared (EWMA)')
 plt.plot(signalarray)
 plt.show()
