@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 
 # open the putty log file
 # with open('putty.log') as f:
-with open('ppg_qt_buffer_grasp.log') as f:
+with open('ppg_qt_buffer_ewma.log') as f:
     # read the file into a list
     lines = f.readlines()
 
