@@ -10,6 +10,8 @@
 // Initialize constants and variables
 CircularBuffer<int,BUFFERSIZE> buffer; // Create a circular buffer for sensor data
 int sensorValue;
+int smoothValue;
+int sensorPrevious;
 int bufferValue;
 MAX30105 particleSensor; // Set up the sensor configuration
 
@@ -59,20 +61,32 @@ void setup() {
 }
 
 void loop() {
-  
+  // Read the PPG sensor and smooth the data, then push it to the buffer
   sensorValue = particleSensor.getIR();
-  buffer.push(sensorValue);
+  smoothValue = 0.8 * sensorValue + 0.2 * sensorPrevious;
+  sensorPrevious = smoothValue;
+  buffer.push(smoothValue);
   bufferValue = buffer.first()-buffer.last();
 
-  dxl.setGoalPosition(DXL_ID, 270.0, UNIT_DEGREE); // Set start and end positions, with a delay until they reach that position
-  delay(3000);
+  // Half fist contraction
+  if (bufferValue > 500){
+    dxl.setGoalPosition(DXL_ID, 270.0, UNIT_DEGREE);
+    // Wait for the contraction to end
+    while(bufferValue > -500){
+      ;
+    }
+    dxl.setGoalPosition(DXL_ID, 90.0, UNIT_DEGREE);
+  }
 
-  dxl.setGoalPosition(DXL_ID2, 270.0, UNIT_DEGREE); // Set start and end positions, with a delay until they reach that position
-  delay(3000);
-
-  dxl.setGoalPosition(DXL_ID, 90.0, UNIT_DEGREE);
-  delay(3000);
-
-  dxl.setGoalPosition(DXL_ID2, 90.0, UNIT_DEGREE); // Set start and end positions, with a delay until they reach that position
-  delay(3000);
+  // Full fist contraction
+  if (bufferValue > 1000){
+    dxl.setGoalPosition(DXL_ID, 270.0, UNIT_DEGREE);
+    dxl.setGoalPosition(DXL_ID2, 270.0, UNIT_DEGREE);
+    // Wait for the contraction to end
+    while(bufferValue > -1000){
+      ;
+    }
+    dxl.setGoalPosition(DXL_ID, 90.0, UNIT_DEGREE);
+    dxl.setGoalPosition(DXL_ID2, 90.0, UNIT_DEGREE);
+  }
 }
