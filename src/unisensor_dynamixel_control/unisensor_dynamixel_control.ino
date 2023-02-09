@@ -67,26 +67,47 @@ void loop() {
   sensorPrevious = smoothValue;
   buffer.push(smoothValue);
   bufferValue = buffer.first()-buffer.last();
+  Serial.println(bufferValue);
 
-  // Half fist contraction
-  if (bufferValue > 500){
-    dxl.setGoalPosition(DXL_ID, 270.0, UNIT_DEGREE);
-    // Wait for the contraction to end
-    while(bufferValue > -500){
-      ;
-    }
-    dxl.setGoalPosition(DXL_ID, 90.0, UNIT_DEGREE);
-  }
+  // // Half fist contraction
+  // if (bufferValue > 500){
+  //   dxl.setGoalPosition(DXL_ID, 270.0, UNIT_DEGREE);
+  //   // Wait for the contraction to end
+  //   while(bufferValue > -500){
+  //       sensorValue = particleSensor.getIR();
+  //       smoothValue = 0.8 * sensorValue + 0.2 * sensorPrevious;
+  //       sensorPrevious = smoothValue;
+  //       buffer.push(smoothValue);
+  //       bufferValue = buffer.first()-buffer.last();
+  //       Serial.println(bufferValue);
+  //   }
+  //   dxl.setGoalPosition(DXL_ID, 90.0, UNIT_DEGREE);
+  // }
 
   // Full fist contraction
-  if (bufferValue > 1000){
+  if (bufferValue < -5000){
     dxl.setGoalPosition(DXL_ID, 270.0, UNIT_DEGREE);
     dxl.setGoalPosition(DXL_ID2, 270.0, UNIT_DEGREE);
     // Wait for the contraction to end
-    while(bufferValue > -1000){
-      ;
+    while (dxl.getPresentPosition(DXL_ID,UNIT_DEGREE) < 250) {  // wait until the servo has reached the goal position
+      sensorValue = particleSensor.getIR();
+      smoothValue = 0.8 * sensorValue + 0.2 * sensorPrevious;
+      sensorPrevious = smoothValue;
+      buffer.push(smoothValue);
+      bufferValue = buffer.first()-buffer.last();
+      Serial.println(bufferValue);
     }
+  }
+  else if (bufferValue > 5000){
     dxl.setGoalPosition(DXL_ID, 90.0, UNIT_DEGREE);
     dxl.setGoalPosition(DXL_ID2, 90.0, UNIT_DEGREE);
+    while (dxl.getPresentPosition(DXL_ID,UNIT_DEGREE) > 100) {  // wait until the servo has reached the goal position
+      sensorValue = particleSensor.getIR();
+      smoothValue = 0.8 * sensorValue + 0.2 * sensorPrevious;
+      sensorPrevious = smoothValue;
+      buffer.push(smoothValue);
+      bufferValue = buffer.first()-buffer.last();
+      Serial.println(bufferValue);
+    }
   }
 }
