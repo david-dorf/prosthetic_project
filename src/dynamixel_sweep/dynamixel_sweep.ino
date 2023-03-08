@@ -26,14 +26,12 @@ using namespace ControlTableItem;
 
 void setup() {
   // Set serial baud rate for the OpenRB-150
-  DEBUG_SERIAL.begin(115200);
-  while(!DEBUG_SERIAL);
 
   // Set up PPG sensor
-  if (particleSensor.begin() == false){
-    while (1);
-  }
-  particleSensor.setup();
+  // if (particleSensor.begin() == false){
+  //   while (1);
+  // }
+  // particleSensor.setup();
 
   // Set DYNAMIXEL baud rate
   dxl.begin(57600);
@@ -60,9 +58,9 @@ void setup() {
 
 void loop() {
   
-  sensorValue = particleSensor.getIR();
-  buffer.push(sensorValue);
-  bufferValue = buffer.first()-buffer.last();
+  // sensorValue = particleSensor.getIR();
+  // buffer.push(sensorValue);
+  // bufferValue = buffer.first()-buffer.last();
 
   dxl.setGoalPosition(DXL_ID, 270.0, UNIT_DEGREE); // Set start and end positions, with a delay until they reach that position
   delay(3000);
