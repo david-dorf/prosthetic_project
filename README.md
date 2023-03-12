@@ -6,4 +6,5 @@ Electromyography (EMG) sensing technology is currently limited by its low signal
 ## Flexible materials and biomimetic joints
 Traditional prosthetic devices using EMG control lack the ability of abduction. A new approach to prosthetics using flexible materials could allow for more complex gestures and improved dexterity when manipulating objects. Advancements in the field of 3D printing can allow for semi-hollow devices made of stretchable materials, like thermoplastic polyurethane (TPU), to be employed without sacrificing resilience to the elements. Combining a novel MMG/PPG control system with a prosthetic with hexagonal infill 3D printing pattern and biomimetic joints containing flexible MCP ligaments can allow for a lighter, more affordable, and durable prosthetic device.
 
+## More information
 Additional details can be found at daviddorf.com - including CAD drawings, 3D renderings, and videos of the armband and bionic hand in action.
