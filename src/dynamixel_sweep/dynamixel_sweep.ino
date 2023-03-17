@@ -62,15 +62,15 @@ void loop() {
   // buffer.push(sensorValue);
   // bufferValue = buffer.first()-buffer.last();
 
-  dxl.setGoalPosition(DXL_ID, 270.0, UNIT_DEGREE); // Set start and end positions, with a delay until they reach that position
+  dxl.setGoalPosition(DXL_ID2, 90.0, UNIT_DEGREE); // close
   delay(3000);
 
-  dxl.setGoalPosition(DXL_ID2, 270.0, UNIT_DEGREE); // Set start and end positions, with a delay until they reach that position
+  dxl.setGoalPosition(DXL_ID, 270.0, UNIT_DEGREE); // close
   delay(3000);
 
-  dxl.setGoalPosition(DXL_ID, 90.0, UNIT_DEGREE);
+  dxl.setGoalPosition(DXL_ID, 90.0, UNIT_DEGREE); // open
   delay(3000);
 
-  dxl.setGoalPosition(DXL_ID2, 90.0, UNIT_DEGREE); // Set start and end positions, with a delay until they reach that position
+  dxl.setGoalPosition(DXL_ID2, 270.0, UNIT_DEGREE); // open
   delay(3000);
 }

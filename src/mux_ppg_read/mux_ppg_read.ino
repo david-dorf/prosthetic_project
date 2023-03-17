@@ -70,18 +70,15 @@ void loop()
         if (x == 0)
         {
             ppgIR1 = particleSensor.getIR();
-            smoothValue1 = 0.7 * ppgIR1 + 0.3 * sensorPrevious1;
-            sensorPrevious1 = smoothValue1;
-            Serial.print((float)smoothValue1 / smoothValue2);
+            // smoothValue1 = 0.7 * ppgIR1 + 0.3 * sensorPrevious1;
+            // sensorPrevious1 = smoothValue1;
+            // Serial.print((float)smoothValue1/smoothValue2);
+            Serial.println((float)ppgIR1/ppgIR2);
         }
         else if (x == 1)
         {
             ppgIR2 = particleSensor.getIR();
-            smoothValue2 = 0.7 * ppgIR2 + 0.3 * sensorPrevious2;
-            sensorPrevious2 = smoothValue2;
-            Serial.print(",");
-            // Serial.println((float)ppgIR2/ppgIR1);
-            Serial.println((float)smoothValue2 / smoothValue1);
+            Serial.println((float)ppgIR1/ppgIR2);
         }
         disableMuxPort(x);
     }
