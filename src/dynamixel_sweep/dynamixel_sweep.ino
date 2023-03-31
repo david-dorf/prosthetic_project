@@ -2,18 +2,6 @@
 #define DXL_SERIAL Serial1
 #define DEBUG_SERIAL Serial
 
-#include <Wire.h>
-#include "MAX30105.h"
-#include <CircularBuffer.h>
-#define BUFFERSIZE 10
-
-// Initialize constants and variables
-CircularBuffer<int,BUFFERSIZE> buffer; // Create a circular buffer for sensor data
-int sensorValue;
-int bufferValue;
-MAX30105 particleSensor; // Set up the sensor configuration
-
-
 // Dynamixel configuration
 const int DXL_DIR_PIN = -1;
 const uint8_t DXL_ID = 1;
@@ -24,15 +12,8 @@ Dynamixel2Arduino dxl(DXL_SERIAL, DXL_DIR_PIN);
 // Use the Control Table namespace
 using namespace ControlTableItem;
 
-void setup() {
-  // Set serial baud rate for the OpenRB-150
-
-  // Set up PPG sensor
-  // if (particleSensor.begin() == false){
-  //   while (1);
-  // }
-  // particleSensor.setup();
-
+void setup()
+{
   // Set DYNAMIXEL baud rate
   dxl.begin(57600);
 
@@ -52,16 +33,12 @@ void setup() {
   dxl.torqueOn(DXL_ID2);
 
   // Max velocity is the third argument. Higher values give higher speed limits except 0, which gives the maximum.
-  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID, 50);
-  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID2, 50);
+  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID, 150);
+  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID2, 150);
 }
 
-void loop() {
-  
-  // sensorValue = particleSensor.getIR();
-  // buffer.push(sensorValue);
-  // bufferValue = buffer.first()-buffer.last();
-
+void loop()
+{
   dxl.setGoalPosition(DXL_ID2, 90.0, UNIT_DEGREE); // close
   delay(3000);
 

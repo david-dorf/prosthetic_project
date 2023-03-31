@@ -8,13 +8,12 @@
 #define BUFFERSIZE 10
 
 // Initialize constants and variables
-CircularBuffer<int,BUFFERSIZE> buffer; // Create a circular buffer for sensor data
+CircularBuffer<int, BUFFERSIZE> buffer; // Create a circular buffer for sensor data
 int sensorValue;
 int smoothValue;
 int sensorPrevious;
 int bufferValue;
 MAX30105 particleSensor; // Set up the sensor configuration
-
 
 // Dynamixel configuration
 const int DXL_DIR_PIN = -1;
@@ -26,14 +25,18 @@ Dynamixel2Arduino dxl(DXL_SERIAL, DXL_DIR_PIN);
 // Use the Control Table namespace
 using namespace ControlTableItem;
 
-void setup() {
+void setup()
+{
   // Set serial baud rate for the OpenRB-150
   DEBUG_SERIAL.begin(115200);
-  while(!DEBUG_SERIAL);
+  while (!DEBUG_SERIAL)
+    ;
 
   // Set up PPG sensor
-  if (particleSensor.begin() == false){
-    while (1);
+  if (particleSensor.begin() == false)
+  {
+    while (1)
+      ;
   }
   particleSensor.setup();
 
@@ -60,53 +63,43 @@ void setup() {
   dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID2, 50);
 }
 
-void loop() {
+void loop()
+{
   // Read the PPG sensor and smooth the data, then push it to the buffer
   sensorValue = particleSensor.getIR();
   smoothValue = 0.8 * sensorValue + 0.2 * sensorPrevious;
   sensorPrevious = smoothValue;
   buffer.push(smoothValue);
-  bufferValue = buffer.first()-buffer.last();
+  bufferValue = buffer.first() - buffer.last();
   Serial.println(bufferValue);
 
-  // // Half fist contraction
-  // if (bufferValue > 500){
-  //   dxl.setGoalPosition(DXL_ID, 270.0, UNIT_DEGREE);
-  //   // Wait for the contraction to end
-  //   while(bufferValue > -500){
-  //       sensorValue = particleSensor.getIR();
-  //       smoothValue = 0.8 * sensorValue + 0.2 * sensorPrevious;
-  //       sensorPrevious = smoothValue;
-  //       buffer.push(smoothValue);
-  //       bufferValue = buffer.first()-buffer.last();
-  //       Serial.println(bufferValue);
-  //   }
-  //   dxl.setGoalPosition(DXL_ID, 90.0, UNIT_DEGREE);
-  // }
-
   // Full fist contraction
-  if (bufferValue < -5000){
+  if (bufferValue < -5000)
+  {
     dxl.setGoalPosition(DXL_ID, 270.0, UNIT_DEGREE);
     dxl.setGoalPosition(DXL_ID2, 270.0, UNIT_DEGREE);
     // Wait for the contraction to end
-    while (dxl.getPresentPosition(DXL_ID,UNIT_DEGREE) < 250) {  // wait until the servo has reached the goal position
+    while (dxl.getPresentPosition(DXL_ID, UNIT_DEGREE) < 250)
+    { // wait until the servo has reached the goal position
       sensorValue = particleSensor.getIR();
       smoothValue = 0.8 * sensorValue + 0.2 * sensorPrevious;
       sensorPrevious = smoothValue;
       buffer.push(smoothValue);
-      bufferValue = buffer.first()-buffer.last();
+      bufferValue = buffer.first() - buffer.last();
       Serial.println(bufferValue);
     }
   }
-  else if (bufferValue > 5000){
+  else if (bufferValue > 5000)
+  {
     dxl.setGoalPosition(DXL_ID, 90.0, UNIT_DEGREE);
     dxl.setGoalPosition(DXL_ID2, 90.0, UNIT_DEGREE);
-    while (dxl.getPresentPosition(DXL_ID,UNIT_DEGREE) > 100) {  // wait until the servo has reached the goal position
+    while (dxl.getPresentPosition(DXL_ID, UNIT_DEGREE) > 100)
+    { // wait until the servo has reached the goal position
       sensorValue = particleSensor.getIR();
       smoothValue = 0.8 * sensorValue + 0.2 * sensorPrevious;
       sensorPrevious = smoothValue;
       buffer.push(smoothValue);
-      bufferValue = buffer.first()-buffer.last();
+      bufferValue = buffer.first() - buffer.last();
       Serial.println(bufferValue);
     }
   }
