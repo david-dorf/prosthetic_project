@@ -59,8 +59,8 @@ void setup()
   dxl.torqueOn(DXL_ID2);
 
   // Max velocity is the third argument. Higher values give higher speed limits except 0, which gives the maximum.
-  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID, 50);
-  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID2, 50);
+  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID, 150);
+  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID2, 150);
 }
 
 void loop()
@@ -76,31 +76,24 @@ void loop()
   // Full fist contraction
   if (bufferValue < -5000)
   {
-    dxl.setGoalPosition(DXL_ID, 270.0, UNIT_DEGREE);
+    dxl.setGoalPosition(DXL_ID, 90.0, UNIT_DEGREE);
     dxl.setGoalPosition(DXL_ID2, 270.0, UNIT_DEGREE);
-    // Wait for the contraction to end
-    while (dxl.getPresentPosition(DXL_ID, UNIT_DEGREE) < 250)
-    { // wait until the servo has reached the goal position
-      sensorValue = particleSensor.getIR();
-      smoothValue = 0.8 * sensorValue + 0.2 * sensorPrevious;
-      sensorPrevious = smoothValue;
-      buffer.push(smoothValue);
-      bufferValue = buffer.first() - buffer.last();
-      Serial.println(bufferValue);
-    }
+    sensorValue = particleSensor.getIR();
+    smoothValue = 0.8 * sensorValue + 0.2 * sensorPrevious;
+    sensorPrevious = smoothValue;
+    buffer.push(smoothValue);
+    bufferValue = buffer.first() - buffer.last();
+    Serial.println(bufferValue);
   }
   else if (bufferValue > 5000)
   {
-    dxl.setGoalPosition(DXL_ID, 90.0, UNIT_DEGREE);
+    dxl.setGoalPosition(DXL_ID, 270.0, UNIT_DEGREE);
     dxl.setGoalPosition(DXL_ID2, 90.0, UNIT_DEGREE);
-    while (dxl.getPresentPosition(DXL_ID, UNIT_DEGREE) > 100)
-    { // wait until the servo has reached the goal position
-      sensorValue = particleSensor.getIR();
-      smoothValue = 0.8 * sensorValue + 0.2 * sensorPrevious;
-      sensorPrevious = smoothValue;
-      buffer.push(smoothValue);
-      bufferValue = buffer.first() - buffer.last();
-      Serial.println(bufferValue);
-    }
+    sensorValue = particleSensor.getIR();
+    smoothValue = 0.8 * sensorValue + 0.2 * sensorPrevious;
+    sensorPrevious = smoothValue;
+    buffer.push(smoothValue);
+    bufferValue = buffer.first() - buffer.last();
+    Serial.println(bufferValue);
   }
 }
