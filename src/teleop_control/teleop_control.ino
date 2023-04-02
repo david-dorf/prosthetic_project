@@ -96,5 +96,14 @@ void loop()
       servo1_closed = true;
       servo2_closed = true;
     }
+
+    // add slider numeric input
+    else if (inChar < 270 && inChar > 90) // if a number is sent over serial, close both servos
+    {
+      dxl.setGoalPosition(DXL_ID2, inChar, UNIT_DEGREE); // close
+      dxl.setGoalPosition(DXL_ID, inChar, UNIT_DEGREE);  // close
+      servo1_closed = true;
+      servo2_closed = true;
+    }
   }
 }
