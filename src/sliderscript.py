@@ -19,6 +19,8 @@ class SliderWindow(QWidget):
         self.slider1.setValue(180)
         self.slider1.setTickPosition(QSlider.TicksBelow)
         self.slider1.setTickInterval(10)
+        self.slider1.setStyleSheet("QSlider::groove:horizontal { height: 20px; background-color: #ddd; }"
+                                   "QSlider::handle:horizontal { width: 30px; background-color: #bbb; }")
         self.slider1.valueChanged.connect(self.send_values)
 
         # Set up the second slider
@@ -28,6 +30,8 @@ class SliderWindow(QWidget):
         self.slider2.setValue(180)
         self.slider2.setTickPosition(QSlider.TicksBelow)
         self.slider2.setTickInterval(10)
+        self.slider2.setStyleSheet("QSlider::groove:horizontal { height: 20px; background-color: #ddd; }"
+                                   "QSlider::handle:horizontal { width: 30px; background-color: #bbb; }")
         self.slider2.valueChanged.connect(self.send_values)
 
         # Set up the labels
@@ -64,9 +68,7 @@ class SliderWindow(QWidget):
         # Send the values over serial
         value1 = str(self.slider1.value()).encode('utf-8')
         value2 = str(self.slider2.value()).encode('utf-8')
-        # self.ser.write(value1 + b',' + value2)
-        self.ser.write(value1)
-        print(value1)
+        self.ser.write(value1 + b'\n')
 
         # Update the labels
         self.label1.setText('Motor 1: {}'.format(self.slider1.value()))

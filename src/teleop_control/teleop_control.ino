@@ -16,9 +16,11 @@ bool servo2_closed = false;
 // Use the Control Table namespace
 using namespace ControlTableItem;
 
+// Initialize inChar
+int inChar;
+
 void setup()
 {
-
   // Set DYNAMIXEL baud rate
   dxl.begin(57600);
 
@@ -46,7 +48,8 @@ void loop()
 {
   if (Serial.available() > 0)
   {
-    char inChar = Serial.read();
+    inChar = Serial.parseInt();
+    Serial.println(inChar);
     if (inChar == 'a') // if 'a' is pressed, close both servos
     {
       dxl.setGoalPosition(DXL_ID2, 90.0, UNIT_DEGREE); // close
@@ -98,10 +101,10 @@ void loop()
     }
 
     // add slider numeric input
-    else if (inChar < 270 && inChar > 90) // if a number is sent over serial, close both servos
+    else if (inChar >= 90 && inChar <= 270) // if a number is sent over serial, close both servos
     {
-      dxl.setGoalPosition(DXL_ID2, inChar, UNIT_DEGREE); // close
-      dxl.setGoalPosition(DXL_ID, inChar, UNIT_DEGREE);  // close
+      dxl.setGoalPosition(DXL_ID2, inChar, UNIT_DEGREE);      // close
+      dxl.setGoalPosition(DXL_ID, 360 - inChar, UNIT_DEGREE); // close
       servo1_closed = true;
       servo2_closed = true;
     }
