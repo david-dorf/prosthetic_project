@@ -48,7 +48,8 @@ void loop()
 {
   if (Serial.available() > 0)
   {
-    inChar = Serial.parseInt();
+    inChar = Serial.read();
+    // inChar = Serial.parseInt(); // if you want to use the slider
     Serial.println(inChar);
     if (inChar == 'a') // if 'a' is pressed, close both servos
     {
@@ -100,13 +101,13 @@ void loop()
       servo2_closed = true;
     }
 
-    // add slider numeric input
-    else if (inChar >= 90 && inChar <= 270) // if a number is sent over serial, close both servos
-    {
-      dxl.setGoalPosition(DXL_ID2, inChar, UNIT_DEGREE);      // close
-      dxl.setGoalPosition(DXL_ID, 360 - inChar, UNIT_DEGREE); // close
-      servo1_closed = true;
-      servo2_closed = true;
-    }
+    // // add slider numeric input
+    // else if (inChar >= 90 && inChar <= 270) // if a number is sent over serial, close both servos
+    // {
+    //   dxl.setGoalPosition(DXL_ID2, inChar, UNIT_DEGREE);      // close
+    //   dxl.setGoalPosition(DXL_ID, 360 - inChar, UNIT_DEGREE); // close
+    //   servo1_closed = true;
+    //   servo2_closed = true;
+    // }
   }
 }

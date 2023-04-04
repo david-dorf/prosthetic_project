@@ -74,7 +74,7 @@ void loop()
   Serial.println(bufferValue);
 
   // Full fist contraction
-  if (bufferValue < -5000)
+  if (bufferValue < -1500)
   {
     dxl.setGoalPosition(DXL_ID, 90.0, UNIT_DEGREE);
     dxl.setGoalPosition(DXL_ID2, 270.0, UNIT_DEGREE);
@@ -85,7 +85,7 @@ void loop()
     bufferValue = buffer.first() - buffer.last();
     Serial.println(bufferValue);
   }
-  else if (bufferValue > 5000)
+  else if (bufferValue > 1500)
   {
     dxl.setGoalPosition(DXL_ID, 270.0, UNIT_DEGREE);
     dxl.setGoalPosition(DXL_ID2, 90.0, UNIT_DEGREE);
